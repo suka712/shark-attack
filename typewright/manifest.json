@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Typewright",
+  "version": "1.0.0",
+  "description": "Append content to a Googlesheet",
+  "icons": {
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "permissions": ["identity"],
+  "oauth2": {
+    "client_id": "667830119015-0578m330dc70aj2h1d60n06hvmqu4o0e.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/spreadsheets"]
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
+}

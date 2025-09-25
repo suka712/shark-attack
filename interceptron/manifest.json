@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Interceptron",
+  "version": "1.0",
+  "description": "A proof-of-concept to read response bodies of web requests.",
+  "icons": {
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.mexc.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["injected-script.js"],
+      "matches": ["https://www.mexc.com/*"]
+    }
+  ],
+  "host_permissions": ["https://www.mexc.com/*"]
+}
