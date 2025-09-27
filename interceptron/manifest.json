@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Interceptron",
+  "name": "Interceptron - general response capture",
   "version": "1.0",
   "description": "A proof-of-concept to read response bodies of web requests.",
   "icons": {

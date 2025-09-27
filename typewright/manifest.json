@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Typewright",
+  "name": "Typewright - write content to a Googlesheet",
   "version": "1.0.0",
-  "description": "Append content to a Googlesheet",
+  "description": "Write content to a Googlesheet using OAuth",
   "icons": {
     "48": "icon.png",
     "128": "icon.png"
