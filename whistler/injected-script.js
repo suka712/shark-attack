@@ -1,7 +1,7 @@
 (function () {
   const originalFetch = window.fetch;
-
-  const targetURL = "p2p.mexc.com/api";
+  // https://p2p.mexc.com/api/order/deal/history?coinId=&orderDealStates=NOT_PAID%2CPROCESSING%2CPAID%2CCOMPLAINING&page=1&tradeType=
+  const targetURL = "p2p.mexc.com/api/order/deal/history";
 
   window.fetch = async function (...args) {
     const requestUrl = typeof args[0] === "string" ? args[0] : args[0].url;
@@ -15,7 +15,7 @@
     clonedReponse.json().then((json) => {
       try {
         const paymentInfo = extractPaymentInfo(json);
-        if (paymentInfo.length > 0) {
+        if (paymentInfo) {
           console.log("Successful extraction:", paymentInfo);
         }
       } catch (error) {
@@ -32,7 +32,7 @@
     //   return null;
     // }
 
-    return ("Specific string found in ", targetURL);
+    return ("Specific string found in" + targetURL);
 
     // return {
     //   bankName: json.data.paymentInfo.bankName ?? null,
