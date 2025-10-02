@@ -1,4 +1,4 @@
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
   if (message.type === "WRITE_TO_SHEET") {
     writeToSheet(message.data);
   }
@@ -36,7 +36,7 @@ async function writeToSheet(paymentInfo) {
       }
 
       const data = await res.json();
-      console.log("✅ Successfully written to sheet!", data);
+      console.log("Successfully written to sheet!", data);
     } catch (err) {
       console.error("Request failed:", err);
     }

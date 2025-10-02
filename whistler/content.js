@@ -1,8 +1,8 @@
 // Inject our page script into the site
-const s = document.createElement("script");
-s.src = chrome.runtime.getURL("injected-script.js");
-(document.head || document.documentElement).appendChild(s);
-s.onload = () => s.remove();
+const script = document.createElement("script");
+script.src = chrome.runtime.getURL("injected-script.js");
+(document.head || document.documentElement).appendChild(script);
+script.onload = () => script.remove();
 
 // Listen for messages from the page
 window.addEventListener("message", (event) => {
