@@ -1,44 +1,37 @@
 (function () {
   const originalFetch = window.fetch;
-  // https://p2p.mexc.com/api/order/deal/history?coinId=&orderDealStates=NOT_PAID%2CPROCESSING%2CPAID%2CCOMPLAINING&page=1&tradeType=
   const targetURL = "p2p.mexc.com/api/order/deal/history";
 
   window.fetch = async function (...args) {
     const requestUrl = typeof args[0] === "string" ? args[0] : args[0].url;
+
     if (!requestUrl.includes(targetURL)) {
       return originalFetch(...args);
     }
 
     const originalResponse = await originalFetch(...args);
 
-    const clonedReponse = originalResponse.clone();
-    clonedReponse.json().then((json) => {
+    const clonedResponse = originalResponse.clone();
+    clonedResponse.json().then((json) => {
       try {
-        const paymentInfo = extractPaymentInfo(json);
-        if (paymentInfo) {
-          console.log("Successful extraction:", paymentInfo);
+        if (json?.responseTime && json?.msg) {
+          window.postMessage(
+            {
+              source: "whistler",
+              type: "EXTRACTED_INFO",
+              data: {
+                responseTime: json.responseTime,
+                msg: json.msg,
+              },
+            },
+            "*"
+          );
         }
-      } catch (error) {
-        console.log("Error extracting info:", error);
+      } catch (err) {
+        console.error("Error extracting info:", err);
       }
     });
 
-    return originalResponse; // Return original response to not break the page
+    return originalResponse;
   };
-
-  // Helper function
-  function extractPaymentInfo(json) {
-    // if (!json?.data?.paymentInfo || !json?.data?.merchantInfo) {
-    //   return null;
-    // }
-
-    return ("Specific string found in" + targetURL);
-
-    // return {
-    //   bankName: json.data.paymentInfo.bankName ?? null,
-    //   bankAddress: json.data.paymentInfo.bankAddress ?? null,
-    //   accountNumber: json.data.paymentInfo.accountNumber ?? null,
-    //   merchantName: json.data.merchantInfo.realName ?? null,
-    // };
-  }
 })();

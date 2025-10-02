@@ -1,7 +1,17 @@
-const script = document.createElement('script'); // Creates a script DOM element
-script.src = chrome.runtime.getURL('injected-script.js'); // Gets the URL to the script
-document.documentElement.appendChild(script); // Append the <script> element to the root of the <html>
-// <--- This causes the page to load and execute the script in its own context
-script.onload = function() { // Add a listener for when the script is loaded and remove it from the DOM
-    this.remove(); // This remove the 'node', the script that overwrote window.fetch remained
-};
+// Inject our page script into the site
+const s = document.createElement("script");
+s.src = chrome.runtime.getURL("injected-script.js");
+(document.head || document.documentElement).appendChild(s);
+s.onload = () => s.remove();
+
+// Listen for messages from the page
+window.addEventListener("message", (event) => {
+  if (event.source !== window) return;
+  if (event.data?.source === "whistler" && event.data.type === "EXTRACTED_INFO") {
+    console.log("Content script received:", event.data.data);
+    chrome.runtime.sendMessage({
+      type: "WRITE_TO_SHEET",
+      data: event.data.data,
+    });
+  }
+});
