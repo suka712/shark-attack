@@ -13,13 +13,15 @@
     "scopes": ["https://www.googleapis.com/auth/spreadsheets"]
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   },
   "content_scripts": [
     {
       "matches": ["https://www.mexc.com/*"],
       "js": ["content.js"],
-      "run_at": "document_start"
+      "run_at": "document_start",
+      "type": "module"
     }
   ],
   "web_accessible_resources": [
