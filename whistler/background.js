@@ -1,7 +1,7 @@
 import { CONFIG } from "./config.js";
 
 chrome.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
-  if (message.type === "WRITE_TO_SHEET") {
+  if (message.type === "DATA_TO_SHEET") {
     writeToSheet(message.data);
   }
 });

@@ -17,7 +17,7 @@
         if (json?.responseTime && json?.msg) {
           window.postMessage(
             {
-              source: "whistler",
+              source: "page_context",
               type: "EXTRACTED_INFO",
               data: {
                 responseTime: json.responseTime,
