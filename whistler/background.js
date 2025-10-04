@@ -38,7 +38,7 @@ async function writeToSheet(paymentInfo, sheetId) {
       const data = await res.json();
       console.log("Successfully written to sheet!", data);
     } catch (err) {
-      console.error("Request failed:", err);
+      console.error("Write failed:", err);
     }
   });
 }
