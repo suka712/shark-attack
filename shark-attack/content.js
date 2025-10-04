@@ -13,7 +13,7 @@ window.addEventListener("message", (event) => {
   // Middle man between page context and background writer
   // Listen for message along with extracted data from page context
   if (event.data?.source === "page_context" && event.data.type === "EXTRACTED_INFO") {
-    console.log("Middleman content received:", event.data.data);
+    console.log("Middleman received:", event.data.data);
     // Forward message to write along with extracted data to the sheet to background.js
     chrome.runtime.sendMessage({
       type: "DATA_TO_SHEET",
