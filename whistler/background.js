@@ -1,7 +1,8 @@
 import { Config } from "./config.js";
 
 chrome.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
-  const sheetId = Config.targetSheetId;
+  const sheetId = Config.targetSheetId; 
+  // Receives extracted info and append it to the sheet
   if (message.type === "DATA_TO_SHEET") {
     writeToSheet(message.data, sheetId);
   }
