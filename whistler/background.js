@@ -1,24 +1,25 @@
-import { CONFIG } from "./config.js";
+import { Config } from "./config.js";
 
 chrome.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
+  const sheetId = Config.targetSheetId;
   if (message.type === "DATA_TO_SHEET") {
-    writeToSheet(message.data);
+    writeToSheet(message.data, sheetId);
   }
 });
 
-async function writeToSheet(paymentInfo) {
+async function writeToSheet(paymentInfo, sheetId) {
+  // Get auth token to attempt to write
   chrome.identity.getAuthToken({ interactive: true }, async (token) => {
     if (chrome.runtime.lastError) {
       console.error("Auth error:", chrome.runtime.lastError.message);
       return;
     }
+    // Write data to the specified Googlesheet
     try {
-      const sheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.sheetId}/values/Sheet1!A1:append?valueInputOption=USER_ENTERED`;
-
+      const sheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1!A1:append?valueInputOption=USER_ENTERED`;
       const content = {
         values: [[paymentInfo.responseTime, paymentInfo.msg]],
       };
-
       const res = await fetch(sheetUrl, {
         method: "POST",
         headers: {

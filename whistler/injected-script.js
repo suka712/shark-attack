@@ -1,5 +1,6 @@
 (function () {
   const originalFetch = window.fetch;
+  // This injected script does not take module import
   const targetURL = "p2p.mexc.com/api/order/deal/history";
 
   window.fetch = async function (...args) {
@@ -14,6 +15,7 @@
     const clonedResponse = originalResponse.clone();
     clonedResponse.json().then((json) => {
       try {
+        // If the response has these fields, send them as message to the content script
         if (json?.responseTime && json?.msg) {
           window.postMessage(
             {
