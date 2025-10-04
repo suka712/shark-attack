@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Whistler - specialized response capture",
+  "name": "Shark Attack - the real deal",
   "version": "1.0",
-  "description": "A proof-of-concept to read response bodies of web requests.",
+  "description": "Read and add responses to a sheet.",
   "icons": {
     "48": "icon.png",
     "128": "icon.png"
