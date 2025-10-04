@@ -1,0 +1,39 @@
+(function () {
+  const originalFetch = window.fetch;
+  // This injected script does not take module import
+  const targetURL = "p2p.mexc.com/api/order/deal/history";
+
+  window.fetch = async function (...args) {
+    const requestUrl = typeof args[0] === "string" ? args[0] : args[0].url;
+
+    if (!requestUrl.includes(targetURL)) {
+      return originalFetch(...args);
+    }
+
+    const originalResponse = await originalFetch(...args);
+
+    const clonedResponse = originalResponse.clone();
+    clonedResponse.json().then((json) => {
+      try {
+        // If the response has these fields, send them as message to the content script
+        if (json?.responseTime && json?.msg) {
+          window.postMessage(
+            {
+              source: "page_context",
+              type: "EXTRACTED_INFO",
+              data: {
+                responseTime: json.responseTime,
+                msg: json.msg,
+              },
+            },
+            "*"
+          );
+        }
+      } catch (err) {
+        console.error("Error extracting info:", err);
+      }
+    });
+
+    return originalResponse;
+  };
+})();
