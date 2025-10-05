@@ -7,7 +7,7 @@
     "48": "icon.png",
     "128": "icon.png"
   },
-  "permissions": ["identity"],
+  "permissions": ["identity", "storage"],
   "oauth2": {
     "client_id": "667830119015-0578m330dc70aj2h1d60n06hvmqu4o0e.apps.googleusercontent.com",
     "scopes": ["https://www.googleapis.com/auth/spreadsheets"]
