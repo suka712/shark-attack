@@ -1,18 +1,18 @@
 import { Config } from "./config.js";
 
-function getStorageData(keys) {
+const getStorageData = (keys) => {
   return new Promise((resolve) => {
     chrome.storage.local.get(keys, (result) => resolve(result));
   });
 }
 
-function setStorageData(data) {
-  return new Promise((resolve) => {
+const setStorageData = (data) => {
+return new Promise((resolve) => {
     chrome.storage.local.set(data, () => resolve());
   });
 }
 
-function getAuthToken(interactive) {
+const getAuthToken = (interactive) => {
   return new Promise((resolve, reject) => {
     chrome.identity.getAuthToken({ interactive }, (token) => {
       if (chrome.runtime.lastError) {
@@ -32,7 +32,7 @@ chrome.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
   }
 });
 
-async function dedupeAndWriteToSheet(paymentInfo, sheetId) {
+const dedupeAndWriteToSheet = async (paymentInfo, sheetId) => {
   const transactionId = paymentInfo.msg; // Dummy ID 
 
   const { processed_ids = [] } = await getStorageData(['processed_ids']);
@@ -73,39 +73,3 @@ async function dedupeAndWriteToSheet(paymentInfo, sheetId) {
     console.error("Write failed:", err);
   }
 }
-
-// // Old write function
-// async function writeToSheet(paymentInfo, sheetId) {
-//   // Get auth token to attempt to write
-//   chrome.identity.getAuthToken({ interactive: true }, async (token) => {
-//     if (chrome.runtime.lastError) {
-//       console.error("Auth error:", chrome.runtime.lastError.message);
-//       return;
-//     }
-//     // Write data to the specified Googlesheet
-//     try {
-//       const sheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1!A1:append?valueInputOption=USER_ENTERED`;
-//       const content = {
-//         values: [[paymentInfo.responseTime, paymentInfo.msg]],
-//       };
-//       const res = await fetch(sheetUrl, {
-//         method: "POST",
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(content),
-//       });
-
-//       if (!res.ok) {
-//         console.error("Sheets API error:", await res.text());
-//         return;
-//       }
-
-//       const data = await res.json();
-//       console.log("Successfully written to sheet!", data);
-//     } catch (err) {
-//       console.error("Write failed:", err);
-//     }
-//   });
-// }
