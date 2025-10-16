@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Shark Attack - the real deal",
+  "version": "1.0",
+  "description": "Read and add responses to a sheet.",
+  "icons": {
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "permissions": ["identity", "storage"],
+  "oauth2": {
+    "client_id": "667830119015-0578m330dc70aj2h1d60n06hvmqu4o0e.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/spreadsheets"]
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.mexc.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "type": "module"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["injected-script.js", "popup.html", "popup.css", "popup.js"],
+      "matches": ["https://www.mexc.com/*"]
+    }
+  ],
+  "host_permissions": ["https://www.mexc.com/*"]
+}

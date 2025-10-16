@@ -1,0 +1,61 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    width: 350px;
+    padding: 0;
+    margin: 0;
+}
+
+.container {
+    padding: 10px 15px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+}
+
+h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+#sheetLink {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 12px;
+}
+
+#status {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+#transaction-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#transaction-list li {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+    margin-bottom: 8px;
+}
+
+.transaction-id {
+    font-weight: bold;
+    color: #333;
+    word-break: break-all;
+}
+
+.merchant-name {
+    font-size: 12px;
+    color: #666;
+}
