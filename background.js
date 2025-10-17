@@ -54,16 +54,15 @@ chrome.storage.local.get(["recent_transactions"], (result) => {
   }
 });
 
-const dedupeAndWriteToSheet = async (transactionInfo, sheetId) => {
-  const transactionId = transactionInfo.transactionId;
+const dedupeAndWriteToSheet = async (json, sheetId) => {
+  const transactionId = json.transactionId;
 
   const { processed_ids = [] } = await getStorageData(["processed_ids"]);
 
-  if (processed_ids.includes(transactionId)) {
-    console.log("Duplicate transaction found. Skipping entry.");
-    return;
-  }
-
+  // if (processed_ids.includes(transactionId)) {
+  //   console.log("Duplicate transaction found. Skipping entry.");
+  //   return;
+  // }
   try {
     const token = await getAuthToken(true);
     // Write data to specified Googlesheet
@@ -71,11 +70,8 @@ const dedupeAndWriteToSheet = async (transactionInfo, sheetId) => {
     const content = {
       values: [
         [
-          transactionInfo.transactionId,
-          transactionInfo.bankAccount,
-          transactionInfo.bankAddress,
-          transactionInfo.bankNumber,
-          transactionInfo.merchantName,
+          json.message,
+          json.responseTime,
         ],
       ],
     };
@@ -97,17 +93,17 @@ const dedupeAndWriteToSheet = async (transactionInfo, sheetId) => {
     console.log("Successfully written to sheet:", data);
 
     // Add to dedupe list and save
-    processed_ids.push(transactionId);
-    await setStorageData({ processed_ids: processed_ids });
-    console.log(`Transaction ${transactionId} saved.`);
+    // processed_ids.push(transactionId);
+    // await setStorageData({ processed_ids: processed_ids });
+    // console.log(`Transaction ${transactionId} saved.`);
 
     // Add to recent transactions list for the popup
-    recentTransactions.unshift(transactionInfo); // Add to the beginning
-    if (recentTransactions.length > 5) {
-      recentTransactions.pop(); // Keep the list at 5 items
-    }
-    // Persist the recent transactions list
-    await setStorageData({ recent_transactions: recentTransactions });
+    // recentTransactions.unshift(transactionInfo); // Add to the beginning
+    // if (recentTransactions.length > 5) {
+    //   recentTransactions.pop(); // Keep the list at 5 items
+    // }
+    // // Persist the recent transactions list
+    // await setStorageData({ recent_transactions: recentTransactions });
   } catch (err) {
     console.error("Write failed:", err);
   }

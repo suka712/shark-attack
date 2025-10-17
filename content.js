@@ -7,7 +7,7 @@ script.onload = () => script.remove();
 // Listen for message events
 window.addEventListener("message", (event) => {
   if (event.source !== window) {
-    return
+    return;
   }
 
   // Middle man between page context and background writer

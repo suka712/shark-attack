@@ -1,7 +1,5 @@
 CAPTURED MEXC REQUESTS
 
-
-
 URL: https://p2p.mexc.com/api/order/deal/history?coinId=&orderDealStates=NOT_PAID%2CPROCESSING%2CPAID%2CCOMPLAINING&page=1&tradeType=
 
 {
@@ -50,3 +48,6 @@ URL: https://p2p.mexc.com/api/order/deal/history?coinId=&orderDealStates=NOT_PAI
         "totalPage": 1
     }
 }
+------------------------------------------------------------------------------------------------------
+
+{"responseTime":1760705259091,"msg":"success","code":0,"data":[]}

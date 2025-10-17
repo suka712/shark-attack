@@ -9,52 +9,33 @@
       return originalFetch(...args);
     }
 
-    const originalResponse = await originalFetch(...args);
+    const originalResponse = await originalFetch(...args); // Copies original reponse to return later - to not break the page
 
-    const clonedResponse = originalResponse.clone();
+    const clonedResponse = originalResponse.clone(); // Clone the res for data operations
+
     clonedResponse.json().then((json) => {
       // A helper function to avoid repeating the postMessage logic
-      const processTransaction = (transaction) => {
+      const processTransaction = (json) => {
         try {
-          if (transaction?.id && transaction.paymentInfo && transaction.merchantInfo) {
-            transaction.paymentInfo.forEach(payment => {
-              window.postMessage(
-                {
-                  source: "page_context",
-                  type: "EXTRACTED_INFO",
-                  data: {
-                    transactionId: transaction.id,
-                    bankAccount: payment.bankAccount,
-                    bankAddress: payment.bankAddress,
-                    bankNumber: payment.account,
-                    merchantName: transaction.merchantInfo.realName,
-                  },
-                },
-                "*"
-              );
-            });
-          }
+          window.postMessage({
+            source: "page_context",
+            type: "EXTRACTED_INFO",
+            data: {
+              responseTime: json.responseTime,
+              message: json.msg,
+            },
+          });
         } catch (err) {
           console.error("Error processing a transaction object:", err, transaction);
         }
       };
 
-      if (!json?.data) {
-        return; // No data to process
-      }
-
-      // Case 1: Data is an array of transactions
-      if (Array.isArray(json.data)) {
-        console.log(`Processing ${json.data.length} transaction(s) from ARRAY.`);
-        json.data.forEach(processTransaction);
-      } 
-      // Case 2: Data is a single transaction object
-      else if (typeof json.data === 'object' && json.data !== null) {
-        console.log("Processing a SINGLE transaction from OBJECT.");
-        processTransaction(json.data);
+      if (json.responseTime && json.msg) {
+        console.log("A response with .responseTime and .msg found. Attempting extraction");
+        processTransaction(json);
       }
     });
 
-    return originalResponse;
+    return originalResponse; // Return original Response to not break the page
   };
 })();
