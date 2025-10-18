@@ -1,7 +1,7 @@
 import { Config } from "./config.js";
 
 // Store last 5 transactions in memory for the popup
-let recentTransactions = [];
+let recentTransactionsPopup = [];
 
 const getStorageData = (keys) => {
   return new Promise((resolve) => {
@@ -28,7 +28,7 @@ const getAuthToken = (interactive) => {
 };
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-  const sheetId = Config.targetSheetId;
+  const sheetId = Config.targetSheetId; // ID of the sheet to write to
 
   if (message.type === "DATA_TO_SHEET") {
     dedupeAndWriteToSheet(message.data, sheetId);
@@ -40,7 +40,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     // Immediately send back the data we have in memory
     sendResponse({
       sheetId: sheetId,
-      recentTransactions: recentTransactions,
+      recentTransactions: recentTransactionsPopup,
     });
   }
 
@@ -50,12 +50,12 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 // Load initial data from storage when the extension starts
 chrome.storage.local.get(["recent_transactions"], (result) => {
   if (result.recent_transactions) {
-    recentTransactions = result.recent_transactions;
+    recentTransactionsPopup = result.recent_transactions;
   }
 });
 
 const dedupeAndWriteToSheet = async (transactionInfo, sheetId) => {
-  const transactionId = transactionInfo.transactionId;
+  const transactionId = transactionInfo.transactionId; // Unique ID for deduplication
 
   const { processed_ids = [] } = await getStorageData(["processed_ids"]);
 
@@ -105,12 +105,12 @@ const dedupeAndWriteToSheet = async (transactionInfo, sheetId) => {
     console.log(`Transaction ${transactionId} saved.`);
 
     // Add to recent transactions list for the popup
-    recentTransactions.unshift(transactionInfo); // Add to the beginning
-    if (recentTransactions.length > 5) {
-      recentTransactions.pop(); // Keep the list at 5 items
+    recentTransactionsPopup.unshift(transactionInfo); // Add to the beginning
+    if (recentTransactionsPopup.length > 5) {
+      recentTransactionsPopup.pop(); // Keep the list at 5 items
     }
     // Persist the recent transactions list
-    await setStorageData({ recent_transactions: recentTransactions });
+    await setStorageData({ recent_transactions: recentTransactionsPopup });
   } catch (err) {
     console.error("Write failed:", err);
   }
