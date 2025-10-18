@@ -55,14 +55,16 @@ chrome.storage.local.get(["recent_transactions"], (result) => {
 });
 
 const dedupeAndWriteToSheet = async (json, sheetId) => {
-  const transactionId = json.transactionId;
+  // The unique ID to compare against for deduping
+  const transactionId = json.message;
 
   const { processed_ids = [] } = await getStorageData(["processed_ids"]);
 
-  // if (processed_ids.includes(transactionId)) {
-  //   console.log("Duplicate transaction found. Skipping entry.");
-  //   return;
-  // }
+  if (processed_ids.includes(transactionId)) {
+    console.log("Duplicate transaction found. Skipping entry.");
+    return;
+  }
+
   try {
     const token = await getAuthToken(true);
     // Write data to specified Googlesheet
@@ -93,9 +95,9 @@ const dedupeAndWriteToSheet = async (json, sheetId) => {
     console.log("Successfully written to sheet:", data);
 
     // Add to dedupe list and save
-    // processed_ids.push(transactionId);
-    // await setStorageData({ processed_ids: processed_ids });
-    // console.log(`Transaction ${transactionId} saved.`);
+    processed_ids.push(transactionId);
+    await setStorageData({ processed_ids: processed_ids });
+    console.log(`Transaction ${transactionId} saved.`);
 
     // Add to recent transactions list for the popup
     // recentTransactions.unshift(transactionInfo); // Add to the beginning
