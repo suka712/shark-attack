@@ -1,8 +1,12 @@
 (function () {
   const originalFetch = window.fetch;
-  const targetURL = "p2p.mexc.com/api/order/deal/history";
+  const targetURL = "p2p.mexc.com/api/order/deal/history"; // TODO: INVESTIGATE IF THIS IS THE BEST URL TO HOOK INTO
+  // LIKELY THIS WILL CATCH ALL TRANSACTIONS, BUT NEEDS TESTING
+  // IMPLEMENT TEMPORARY LOGGING HERE
 
   window.fetch = async function (...args) {
+    // TODO: REQUEST URL OF ARGS ASIDE FROM string IS LIKELY REDUNDANT
+    // SINCE THEY ARE GET REQUESTS AND CONTAINS NO BODY
     const requestUrl = typeof args[0] === "string" ? args[0] : args[0].url;
 
     if (!requestUrl.includes(targetURL)) {
