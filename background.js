@@ -74,11 +74,11 @@ const dedupeAndWriteToSheet = async (transactionInfo, sheetId) => {
           transactionInfo.createTime,
           transactionInfo.transactionId,
           transactionInfo.account,
-          transactionInfo.bankAddress,
-          transactionInfo.bankNumber,
-          transactionInfo.merchantName,
-          transactionInfo.amount,
-          transactionInfo.price,
+          transactionInfo.bankAddress, // Required
+          transactionInfo.bankNumber, // Required
+          transactionInfo.merchantName, // Required
+          transactionInfo.amount, // Required - VND
+          transactionInfo.price, // Required - VND
         ],
       ],
     };
