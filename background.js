@@ -71,11 +71,12 @@ const dedupeAndWriteToSheet = async (transactionInfo, sheetId) => {
     const content = {
       values: [
         [
-          transactionInfo.createTime,
+          // Follows order exactly like in the sheet.
           transactionInfo.transactionId,
-          transactionInfo.account,
-          transactionInfo.bankAddress, // Required
-          transactionInfo.bankNumber, // Required
+          transactionInfo.createTime,
+          transactionInfo.bankName, // Acc address: VCB
+          transactionInfo.bankAddress, // Acc address: VCB
+          transactionInfo.bankNumber, // Acc number: 1024334
           transactionInfo.merchantName, // Required
           transactionInfo.amount, // Required - VND
           transactionInfo.price, // Required - VND

@@ -29,11 +29,11 @@
                     quantity: transaction.quantity,
                     price: transaction.price,
                     amount: transaction.amount, // Amount to pay in VND
-                    cointName: transaction.coinName,
+                    coinName: transaction.coinName,
                     // Payment details: where to send money
-                    bankAccount: payment.account,
+                    bankName: payment.bankName,
                     bankAddress: payment.bankAddress,
-                    bankNumber: payment.account,
+                    bankNumber: payment.account, // Acc number: 10320443
                     merchantName: transaction.merchantInfo.realName,
                   },
                 },
