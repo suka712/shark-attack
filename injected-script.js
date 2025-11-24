@@ -23,13 +23,14 @@
                   source: "page_context",
                   type: "EXTRACTED_INFO",
                   data: {
-                    transactionId: transaction.id, // Unique to each transaction
+                    // Transaction details: ID, coin price, amount etc.
+                    transactionId: transaction.id,
                     createTime: transaction.createTime,
                     quantity: transaction.quantity,
                     price: transaction.price,
                     amount: transaction.amount, // Amount to pay in VND
                     cointName: transaction.coinName,
-                    // Transaction payment details
+                    // Payment details: where to send money
                     bankAccount: payment.account,
                     bankAddress: payment.bankAddress,
                     bankNumber: payment.account,
