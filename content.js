@@ -1,13 +1,14 @@
 // ----------------------------------------------------------
 // Orchestrator
 // ----------------------------------------------------------
+
 // Inject our page script into the site
 const script = document.createElement('script');
 script.src = chrome.runtime.getURL('injected-script.js');
 (document.head || document.documentElement).appendChild(script);
 script.onload = () => script.remove();
 
-// Listen for message events
+// Listen for messages
 window.addEventListener('message', (event) => {
   if (event.source !== window) {
     return;

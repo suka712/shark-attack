@@ -1,8 +1,9 @@
 import { Config } from './config.js';
 
 // ----------------------------------------------------------
-// Page context
+// Backend
 // ----------------------------------------------------------
+
 // Store last 5 transactions in memory for the popup
 let recentTransactionsPopup = [];
 
