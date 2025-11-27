@@ -23,14 +23,12 @@
                   source: "page_context",
                   type: "EXTRACTED_INFO",
                   data: {
-                    // Transaction details: ID, coin price, amount etc.
                     transactionId: transaction.id,
                     createTime: transaction.createTime,
                     quantity: transaction.quantity,
                     price: transaction.price, // Required
                     amount: transaction.amount,
                     coinName: transaction.coinName,
-                    // Payment details: where to send money
                     bankName: payment.bankName, // likely same: 'MB'
                     bankAddress: payment.bankAddress, // Required: 'MB'
                     bankNumber: payment.account, // Acc number: 1024334
