@@ -14,7 +14,7 @@
     const clonedResponse = originalResponse.clone();
     clonedResponse.json().then((json) => {
       // A helper function to avoid repeating the postMessage logic
-      const processTransaction = (transaction) => {
+      const processAndSendInfo = (transaction) => {
         try {
           if (transaction?.id && transaction.paymentInfo && transaction.merchantInfo) {
             transaction.paymentInfo.forEach(payment => {
@@ -53,12 +53,12 @@
       // Case 1: Data is an array of transactions
       if (Array.isArray(json.data)) {
         console.log(`Processing ${json.data.length} transaction(s) from ARRAY.`);
-        json.data.forEach(processTransaction);
+        json.data.forEach(processAndSendInfo);
       } 
       // Case 2: Data is a single transaction object
       else if (typeof json.data === 'object' && json.data !== null) {
         console.log("Processing a SINGLE transaction from OBJECT.");
-        processTransaction(json.data);
+        processAndSendInfo(json.data);
       }
     });
 
