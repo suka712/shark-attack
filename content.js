@@ -1,3 +1,6 @@
+// ----------------------------------------------------------
+// Orchestrator
+// ----------------------------------------------------------
 // Inject our page script into the site
 const script = document.createElement("script");
 script.src = chrome.runtime.getURL("injected-script.js");
@@ -10,11 +13,10 @@ window.addEventListener("message", (event) => {
     return
   }
 
-  // Middle man between page context and background writer
-  // Listen for message along with extracted data from page context
+  // Listen for info from page context
   if (event.data?.source === "page_context" && event.data.type === "EXTRACTED_INFO") {
-    console.log("Middleman received:", event.data.data);
-    // Forward message to write along with extracted data to the sheet to background.js
+    console.log("Content received:", event.data.data);
+    // Forward info to background.js
     chrome.runtime.sendMessage({
       type: "DATA_TO_SHEET",
       data: event.data.data,
