@@ -1,4 +1,4 @@
-import { Config } from "./config.js";
+import { Config } from './config.js';
 
 // Store last 5 transactions in memory for the popup
 let recentTransactionsPopup = [];
@@ -30,13 +30,13 @@ const getAuthToken = (interactive) => {
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   const sheetId = Config.targetSheetId; // ID of the sheet to write to
 
-  if (message.type === "DATA_TO_SHEET") {
+  if (message.type === 'DATA_TO_SHEET') {
     dedupeAndWriteToSheet(message.data, sheetId);
     return true; // Return to indicate async work is happening elsewhere
   }
 
   // Listener for the popup UI
-  if (message.type === "GET_POPUP_DATA") {
+  if (message.type === 'GET_POPUP_DATA') {
     // Immediately send back the data we have in memory
     sendResponse({
       sheetId: sheetId,
@@ -48,7 +48,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 });
 
 // Load initial data from storage when the extension starts
-chrome.storage.local.get(["recent_transactions"], (result) => {
+chrome.storage.local.get(['recent_transactions'], (result) => {
   if (result.recent_transactions) {
     recentTransactionsPopup = result.recent_transactions;
   }
@@ -57,10 +57,10 @@ chrome.storage.local.get(["recent_transactions"], (result) => {
 const dedupeAndWriteToSheet = async (transactionInfo, sheetId) => {
   const transactionId = transactionInfo.transactionId; // Unique ID for deduplication
 
-  const { processed_ids = [] } = await getStorageData(["processed_ids"]);
+  const { processed_ids = [] } = await getStorageData(['processed_ids']);
 
   if (processed_ids.includes(transactionId)) {
-    console.log("Duplicate transaction found. Skipping entry.");
+    console.log('Duplicate transaction found. Skipping entry.');
     return;
   }
 
@@ -84,21 +84,21 @@ const dedupeAndWriteToSheet = async (transactionInfo, sheetId) => {
       ],
     };
     const res = await fetch(sheetUrl, {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-type": "application/json",
+        'Content-type': 'application/json',
       },
       body: JSON.stringify(content),
     });
 
     if (!res.ok) {
-      console.error("Sheets API error:", await res.text());
+      console.error('Sheets API error:', await res.text());
       return;
     }
 
     const data = await res.json();
-    console.log("Successfully written to sheet:", data);
+    console.log('Successfully written to sheet:', data);
 
     // Add to dedupe list and save
     processed_ids.push(transactionId);
@@ -113,6 +113,6 @@ const dedupeAndWriteToSheet = async (transactionInfo, sheetId) => {
     // Persist the recent transactions list
     await setStorageData({ recent_transactions: recentTransactionsPopup });
   } catch (err) {
-    console.error("Write failed:", err);
+    console.error('Write failed:', err);
   }
 };
