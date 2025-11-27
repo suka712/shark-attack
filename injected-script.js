@@ -1,3 +1,6 @@
+// ----------------------------------------------------------
+// Page context
+// ----------------------------------------------------------
 (function () {
   const originalFetch = window.fetch;
   const targetURL = 'p2p.mexc.com/api/order/deal/history';

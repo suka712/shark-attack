@@ -1,5 +1,8 @@
 import { Config } from './config.js';
 
+// ----------------------------------------------------------
+// Page context
+// ----------------------------------------------------------
 // Store last 5 transactions in memory for the popup
 let recentTransactionsPopup = [];
 
@@ -28,16 +31,16 @@ const getAuthToken = (interactive) => {
 };
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-  const sheetId = Config.targetSheetId; // ID of the sheet to write to
+  const sheetId = Config.targetSheetId;
 
+  // Listener to write to sheet
   if (message.type === 'DATA_TO_SHEET') {
-    dedupeAndWriteToSheet(message.data, sheetId);
-    return true; // Return to indicate async work is happening elsewhere
+    writeToSheet(message.data, sheetId);
+    return true;
   }
 
   // Listener for the popup UI
   if (message.type === 'GET_POPUP_DATA') {
-    // Immediately send back the data we have in memory
     sendResponse({
       sheetId: sheetId,
       recentTransactions: recentTransactionsPopup,
@@ -54,7 +57,7 @@ chrome.storage.local.get(['recent_transactions'], (result) => {
   }
 });
 
-const dedupeAndWriteToSheet = async (transactionInfo, sheetId) => {
+const writeToSheet = async (transactionInfo, sheetId) => {
   const transactionId = transactionInfo.transactionId; // Unique ID for deduplication
 
   const { processed_ids = [] } = await getStorageData(['processed_ids']);
@@ -74,12 +77,12 @@ const dedupeAndWriteToSheet = async (transactionInfo, sheetId) => {
           // Follows order exactly like in the sheet.
           transactionInfo.transactionId,
           transactionInfo.createTime,
-          transactionInfo.bankName, // Acc address: MB
-          transactionInfo.bankAddress, // Acc address: MB
-          transactionInfo.bankNumber, // Acc number: 1024334
-          transactionInfo.merchantName, // Required
-          transactionInfo.amount, // Required - VND
-          transactionInfo.price, // Required - VND
+          transactionInfo.bankName, // Name: MB
+          transactionInfo.bankAddress, // Address: MB
+          transactionInfo.bankNumber, // Number: 1024334
+          transactionInfo.merchantName,
+          transactionInfo.amount, // VND
+          transactionInfo.price,
         ],
       ],
     };
@@ -113,6 +116,6 @@ const dedupeAndWriteToSheet = async (transactionInfo, sheetId) => {
     // Persist the recent transactions list
     await setStorageData({ recent_transactions: recentTransactionsPopup });
   } catch (err) {
-    console.error('Write failed:', err);
+    console.error('Writing to sheet failed:', err);
   }
 };
