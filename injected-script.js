@@ -34,11 +34,11 @@
                     createTime: transaction.createTime,
                     quantity: transaction.quantity,
                     price: transaction.price, // Required
-                    amount: transaction.amount,
+                    amount: transaction.amount, // Required
                     coinName: transaction.coinName,
-                    bankName: payment.bankName, // likely same: 'MB'
-                    bankAddress: payment.bankAddress, // Required: 'MB'
-                    bankNumber: payment.account, // Acc number: 1024334
+                    bankName: payment.bankName, // Required: VCB / Vietcombank
+                    bankAddress: payment.bankAddress, // Required: VCB
+                    bankNumber: payment.account, // Required: 1024334
                     merchantName: transaction.merchantInfo.realName, // Required
                   },
                 },
