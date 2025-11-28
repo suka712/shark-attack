@@ -51,7 +51,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   return true; // Keep message channel open
 });
 
-// Load initial data from storage when the extension starts
+// Load data from storage when the extension starts
 chrome.storage.local.get(['recent_transactions'], (result) => {
   if (result.recent_transactions) {
     recentTransactionsPopup = result.recent_transactions;
