@@ -70,25 +70,45 @@ const writeToSheet = async (transactionInfo, sheetId) => {
 
   try {
     const token = await getAuthToken(true);
-    // Write data to specified Googlesheet
-    const sheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1!A1:append?valueInputOption=USER_ENTERED`;
+
+    // Find the first empty row in column A
+    const columnARange = 'Sheet1!A:A';
+    const getColumnAUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${columnARange}`;
+
+    const columnARes = await fetch(getColumnAUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!columnARes.ok) {
+      console.error('Sheets API error (reading column A):', await columnARes.text());
+      return;
+    }
+
+    const columnAData = await columnARes.json();
+    const lastRow = columnAData.values ? columnAData.values.length : 0;
+    const nextRow = lastRow + 1;
+
+    // Write data to the next empty row
+    const writeRange = `Sheet1!A${nextRow}`;
+    const sheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${writeRange}?valueInputOption=USER_ENTERED`;
     const content = {
       values: [
         [
-          // Follows order exactly like in the sheet.
           transactionInfo.transactionId,
           transactionInfo.createTime,
-          transactionInfo.bankName, // Name: MB
-          transactionInfo.bankAddress, // Address: MB
-          transactionInfo.bankNumber, // Number: 1024334
+          transactionInfo.bankName,
+          transactionInfo.bankAddress,
+          transactionInfo.bankNumber,
           transactionInfo.merchantName,
-          transactionInfo.amount, // VND
+          transactionInfo.amount,
           transactionInfo.price,
         ],
       ],
     };
     const res = await fetch(sheetUrl, {
-      method: 'POST',
+      method: 'PUT', // Use PUT to update a specific range
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-type': 'application/json',

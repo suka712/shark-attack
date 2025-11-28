@@ -17,7 +17,10 @@
   "permissions": ["identity", "storage"],
   "oauth2": {
     "client_id": "667830119015-0578m330dc70aj2h1d60n06hvmqu4o0e.apps.googleusercontent.com",
-    "scopes": ["https://www.googleapis.com/auth/spreadsheets"]
+    "scopes": [
+      "https://www.googleapis.com/auth/spreadsheets.readonly",
+      "https://www.googleapis.com/auth/spreadsheets"
+    ]
   },
   "background": {
     "service_worker": "background.js",
