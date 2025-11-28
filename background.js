@@ -48,7 +48,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     });
   }
 
-  return true; // Required to keep the message channel open for async sendResponse
+  return true; // Keep message channel open
 });
 
 // Load initial data from storage when the extension starts
