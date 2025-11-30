@@ -3,7 +3,8 @@
 // ----------------------------------------------------------
 (function () {
   const originalFetch = window.fetch;
-  const targetURL = 'p2p.mexc.com/api/order/deal/history';
+  const targetURL = 'mexc.com/api/platform/p2p/api/order/info';
+
 
   window.fetch = async function (...args) {
     const requestUrl = typeof args[0] === 'string' ? args[0] : args[0].url;
