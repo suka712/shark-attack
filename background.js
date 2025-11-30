@@ -60,7 +60,7 @@ chrome.storage.local.get(['recent_transactions'], (result) => {
 
 const writeToSheet = async (transactionInfo, sheetId) => {
   const transactionId = transactionInfo.transactionId; // Unique ID for deduplication
-
+  const tableName = 'BUY 2025-03-29';
   const { processed_ids = [] } = await getStorageData(['processed_ids']);
 
   if (processed_ids.includes(transactionId)) {
@@ -72,7 +72,7 @@ const writeToSheet = async (transactionInfo, sheetId) => {
     const token = await getAuthToken(true);
 
     // Find the first empty row in column A
-    const columnARange = 'Sheet1!A:A';
+    const columnARange = `${tableName}!A:A`;
     const getColumnAUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${columnARange}`;
 
     const columnARes = await fetch(getColumnAUrl, {
@@ -91,7 +91,7 @@ const writeToSheet = async (transactionInfo, sheetId) => {
     const nextRow = lastRow + 1;
 
     // Write data to the next empty row
-    const writeRange = `Sheet1!A${nextRow}`;
+    const writeRange = `${tableName}!A${nextRow}`;
     const sheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${writeRange}?valueInputOption=USER_ENTERED`;
     const content = {
       values: [
@@ -140,3 +140,25 @@ const writeToSheet = async (transactionInfo, sheetId) => {
     console.error('Writing to sheet failed:', err);
   }
 };
+
+// // transactionInfo.transactionId,
+// // transactionInfo.createTime,
+// // transactionInfo.bankName,
+// // transactionInfo.bankAddress,
+// // transactionInfo.bankNumber,
+// // transactionInfo.merchantName,
+// // transactionInfo.amount,
+// // transactionInfo.price,
+
+// const dummy1 = {
+//   transactionId: '121212',
+//   createTime: '1212',
+//   bankName: 'VCB',
+//   bankAddress: 'VCB',
+//   bankNumber: '1024562341',
+//   merchantName: 'NGUYEN QUANG KHIEM',
+//   amount: 120000,
+//   price: 24000,
+// }
+
+// writeToSheet(dummy1, '1fUKGkvsZHcJx-zP7PuOJ6hwv3X_TzfFTeq098oQ6a8Y')
